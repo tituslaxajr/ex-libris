@@ -1,76 +1,88 @@
 /*
  * Visual themes, selected by the AI library classifier via
  * library_profile.themeKey → <html data-theme="...">.
- * Nothing genre-specific is hardcoded in components — only these variables.
+ *
+ * All themes share a Claude-inspired identity: the warm coral accent and the
+ * Inter/Source-Serif pairing are constant; only the background/ink mood shifts
+ * between them (with one warm-dark variant). Nothing genre-specific is
+ * hardcoded in components — only these variables.
  */
+
+:root {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  /* back-compat alias (older code referenced --font-display) */
+  --font-display: var(--font-serif);
+}
 
 :root,
 [data-theme="hearth"] {
-  --bg: #f5efe4;
-  --bg-deep: #ece2d0;
-  --surface: #fffaf0;
-  --ink: #2d2318;
-  --ink-soft: #6b5d4a;
-  --accent: #a05c2c;
-  --accent-soft: #d9b18a;
-  --shelf-wood: #8a5a33;
-  --shelf-wood-dark: #6c4526;
-  --shelf-back: #4a3420;
-  --font-display: Georgia, "Times New Roman", serif;
+  --bg: #faf9f5;
+  --bg-deep: #f0eee6;
+  --surface: #ffffff;
+  --ink: #141413;
+  --ink-soft: #73716a;
+  --accent: #d97757;
+  --accent-hover: #c4633f;
+  --accent-soft: #f0d6c8;
+  --shelf-wood: #c9a88f;
+  --shelf-wood-dark: #b0906f;
+  --shelf-back: #8a6f57;
 }
 
 [data-theme="study"] {
-  --bg: #efe6d4;
-  --bg-deep: #e3d5bc;
-  --surface: #f9f3e6;
-  --ink: #241a10;
-  --ink-soft: #5d4d38;
-  --accent: #7a2e1d;
-  --accent-soft: #c9a075;
-  --shelf-wood: #5c3a21;
-  --shelf-wood-dark: #422a17;
-  --shelf-back: #33200f;
-  --font-display: Georgia, "Palatino Linotype", serif;
+  --bg: #f6f3ea;
+  --bg-deep: #efe7d9;
+  --surface: #fffdf8;
+  --ink: #191712;
+  --ink-soft: #6e6555;
+  --accent: #d97757;
+  --accent-hover: #c4633f;
+  --accent-soft: #f0d6c8;
+  --shelf-wood: #c4a382;
+  --shelf-wood-dark: #a98862;
+  --shelf-back: #7e654b;
 }
 
 [data-theme="gallery"] {
-  --bg: #f7f7f5;
-  --bg-deep: #ebebe8;
+  --bg: #faf9f7;
+  --bg-deep: #efeeea;
   --surface: #ffffff;
-  --ink: #1a1a1a;
-  --ink-soft: #5c5c5c;
-  --accent: #c34a36;
-  --accent-soft: #e4a79d;
-  --shelf-wood: #3d3d3d;
-  --shelf-wood-dark: #2a2a2a;
-  --shelf-back: #1f1f1f;
-  --font-display: "Helvetica Neue", Arial, sans-serif;
+  --ink: #1a1a18;
+  --ink-soft: #6f6d67;
+  --accent: #d97757;
+  --accent-hover: #c4633f;
+  --accent-soft: #f0d6c8;
+  --shelf-wood: #b8b2a6;
+  --shelf-wood-dark: #9d968a;
+  --shelf-back: #746e64;
 }
 
 [data-theme="observatory"] {
-  --bg: #10182b;
-  --bg-deep: #0a0f1e;
-  --surface: #1a2440;
-  --ink: #e8ecf7;
-  --ink-soft: #9aa7c7;
-  --accent: #e0a836;
-  --accent-soft: #7787b3;
-  --shelf-wood: #253357;
-  --shelf-wood-dark: #1a2440;
-  --shelf-back: #0e1526;
-  --font-display: Georgia, serif;
+  /* the one warm-dark variant — Claude dark mode */
+  --bg: #262624;
+  --bg-deep: #1f1e1d;
+  --surface: #30302e;
+  --ink: #f5f4ee;
+  --ink-soft: #a6a39a;
+  --accent: #e08a6b;
+  --accent-hover: #eb9d80;
+  --accent-soft: #4a3a30;
+  --shelf-wood: #4a3f34;
+  --shelf-wood-dark: #362e26;
+  --shelf-back: #241e18;
 }
 
 [data-theme="conservatory"] {
-  --bg: #eef2e6;
-  --bg-deep: #dfe7d2;
-  --surface: #f9fbf4;
-  --ink: #22301c;
-  --ink-soft: #5a6b4e;
-  --accent: #4e7a3a;
-  --accent-soft: #a7c294;
-  --shelf-wood: #6d5b3e;
-  --shelf-wood-dark: #52442e;
-  --shelf-back: #3d331f;
-  --font-display: Georgia, serif;
+  --bg: #f7f6ef;
+  --bg-deep: #ecebe0;
+  --surface: #fffef9;
+  --ink: #191a15;
+  --ink-soft: #6c6d5f;
+  --accent: #d97757;
+  --accent-hover: #c4633f;
+  --accent-soft: #f0d6c8;
+  --shelf-wood: #c2ab86;
+  --shelf-wood-dark: #a68f68;
+  --shelf-back: #7c6a4d;
 }

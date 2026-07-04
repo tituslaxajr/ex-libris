@@ -1,8 +1,20 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { getLibraryProfile } from "@/lib/books";
 import RegisterSW from "@/components/pwa/RegisterSW";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-source-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Ex Libris",
@@ -11,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#a05c2c",
+  themeColor: "#d97757",
 };
 
 export const dynamic = "force-dynamic";
@@ -26,7 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html lang="en" data-theme={themeKey}>
+    <html lang="en" data-theme={themeKey} className={`${inter.variable} ${sourceSerif.variable}`}>
       <body>
         <header
           className="sticky top-0 z-40 border-b backdrop-blur"
@@ -36,7 +48,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         >
           <nav className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
-            <Link href="/" className="text-xl font-bold tracking-wide" style={{ color: "var(--accent)" }}>
+            <Link
+              href="/"
+              className="text-xl font-bold"
+              style={{ color: "var(--accent)", fontFamily: "var(--font-serif)" }}
+            >
               Ex Libris
             </Link>
             <div className="flex gap-4 text-sm" style={{ color: "var(--ink-soft)" }}>
