@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getBookWithMeta } from "@/lib/books";
+import { getBookWithMeta, getBookFiles } from "@/lib/books";
+import { db, tables } from "@/db";
+import { eq, desc } from "drizzle-orm";
 import { aiEnabled } from "@/lib/ai";
 import BookActions from "@/components/books/BookActions";
+import UploadZone from "@/components/books/UploadZone";
 import ChatPanel from "@/components/chat/ChatPanel";
 
 export const dynamic = "force-dynamic";
@@ -12,6 +15,13 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
   const book = await getBookWithMeta(Number(id));
   if (!book) notFound();
   const enabled = aiEnabled();
+  const files = await getBookFiles(book.id);
+  const hasFile = files.length > 0;
+  const highlights = await db
+    .select()
+    .from(tables.highlights)
+    .where(eq(tables.highlights.bookId, book.id))
+    .orderBy(desc(tables.highlights.createdAt));
 
   return (
     <div>
@@ -88,6 +98,40 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
           )}
 
           <div className="surface-card mt-6 p-5">
+            <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
+              Read
+            </p>
+            {hasFile ? (
+              <div className="mt-3">
+                {book.progressPercent > 0 && (
+                  <div className="mb-3">
+                    <div className="h-2 w-full rounded-full" style={{ background: "var(--bg-deep)" }}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${book.progressPercent}%`, background: "var(--accent)" }}
+                      />
+                    </div>
+                    <p className="mt-1 text-xs" style={{ color: "var(--ink-soft)" }}>
+                      {Math.round(book.progressPercent)}% read
+                    </p>
+                  </div>
+                )}
+                <Link href={`/books/${book.id}/read`} className="btn-accent inline-block">
+                  {book.progressPercent > 0 ? "Continue reading" : "Open the reader"}
+                </Link>
+              </div>
+            ) : (
+              <div className="mt-3">
+                <p className="mb-3 text-sm" style={{ color: "var(--ink-soft)" }}>
+                  This is a physical book on your shelf. Have a digital copy? Add it to read and
+                  highlight it here.
+                </p>
+                <UploadZone bookId={book.id} />
+              </div>
+            )}
+          </div>
+
+          <div className="surface-card mt-6 p-5">
             <BookActions
               book={{
                 id: book.id,
@@ -101,6 +145,25 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
               aiEnabled={enabled}
             />
           </div>
+
+          {highlights.length > 0 && (
+            <div className="surface-card mt-6 p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
+                Highlights ({highlights.length})
+              </p>
+              <ul className="mt-3 space-y-3">
+                {highlights.map((h) => (
+                  <li
+                    key={h.id}
+                    className="border-l-2 pl-3 text-sm italic leading-relaxed"
+                    style={{ borderColor: "var(--accent-soft)" }}
+                  >
+                    “{h.selectedText}”
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div>

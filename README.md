@@ -4,16 +4,27 @@ An immersive, AI-powered personal library. Catalogue the books you own, read and
 
 The app **adapts to your collection**: an AI classifier reads your catalogue and adjusts the shelf categories, the visual theme, and the companion's persona to match the kinds of books you actually own. A library of Reformed theology gets a dark-oak study feel and a theologically careful companion; a shelf of science fiction would look and sound entirely different. Nothing is hardcoded.
 
-## Features (Phase 1)
+## Features
 
+**Catalogue & discover**
 - **Virtual bookshelf** — your books as spines on wooden shelves, grouped by AI-generated categories, with hover pull-out, reading-progress bars, and a dust film on long-neglected books
 - **Easy cataloguing** — add by ISBN (Open Library with Google Books fallback), by title search, or manually; covers fetched automatically
-- **Reading companion** — streaming AI chat about a single book or across your whole library ("what do my books say about covenant theology?"), grounded in your catalogue and honest about what it doesn't know
-- **AI enrichment** — one click adds a summary, themes, and difficulty level to any book
-- **The dusty shelf** — the app surfaces the book that has waited longest and writes a personal encouragement that remembers *why you bought it*
 - **Adaptive theming** — five visual themes chosen by the classifier, applied app-wide via CSS variables
 
-Everything except the AI features works with **no API key at all** — cataloguing, shelves, progress tracking, and template-based nudges are fully functional offline.
+**Read & track**
+- **In-app reader** — read your uploaded EPUBs (paginated, epub.js) and PDFs (pdf.js) right in the app; reading position is saved automatically and you pick up where you left off
+- **Highlights** — select text in an EPUB to save a highlight; they collect on the book's page
+- **Reading sessions & streaks** — time in the reader is logged automatically and rolls up into a stats page: day streak, minutes and pages this week, books finished, and the dusty shelf
+
+**Learn**
+- **Reading companion** — streaming AI chat about a single book or across your whole library ("what do my books say about covenant theology?"), grounded in your catalogue and honest about what it doesn't know
+- **Discuss what you're reading** — open the companion beside the reader and it can quote and discuss the exact chapter on screen
+- **AI enrichment** — one click adds a summary, themes, and difficulty level to any book
+
+**Motivation**
+- **The dusty shelf** — the app surfaces the book that has waited longest and writes a personal encouragement that remembers *why you bought it*
+
+Everything except the AI features works with **no API key at all** — cataloguing, shelves, the reader, progress tracking, streaks, and template-based nudges are fully functional offline.
 
 ## Getting started
 
@@ -78,9 +89,12 @@ The app runs anywhere Next.js runs. The simplest free path:
 
 ## Roadmap
 
-- **Phase 2 — Read & track:** EPUB upload + in-app reader (epub.js) with progress sync, highlights and notes, reading sessions, streaks, and a stats page
-- **Phase 3 — Learn & plan:** PDF reader, reading plans ("the Institutes in 90 days") with checkpoints, recall quizzes from your highlights, cross-library theme search, public-domain imports (Project Gutenberg, CCEL), milestone celebrations
+- **Phase 1 — Catalogue & companion** ✅ shipped
+- **Phase 2 — Read & track** ✅ shipped (EPUB + PDF reader, progress sync, highlights, sessions, streaks, stats, chapter-grounded chat)
+- **Phase 3 — Learn & plan:** reading plans ("the Institutes in 90 days") with checkpoints, recall quizzes from your highlights, cross-library theme search, public-domain imports (Project Gutenberg, CCEL), milestone celebrations
 - **Phase 4 — Polish:** optional passcode, data export, cumulative AI-cost display, PWA install
+
+> **Deploying the reader:** uploads are stored on local disk by default (`data/uploads/`). On a serverless host like Vercel, the ~4.5 MB request-body limit means large EPUB/PDF uploads should go through a blob store (e.g. Vercel Blob) — the storage layer in `src/lib/storage/` is the single seam to swap for that.
 
 ## Tech
 

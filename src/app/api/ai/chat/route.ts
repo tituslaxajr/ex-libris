@@ -10,6 +10,9 @@ const chatSchema = z.object({
   message: z.string().min(1).max(8000),
   conversationId: z.number().int().optional(),
   bookId: z.number().int().nullable().optional(),
+  // Verbatim text from the passage the user is currently reading, so the
+  // companion can quote it accurately.
+  contextText: z.string().max(12000).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -23,7 +26,7 @@ export async function POST(req: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
-  const { message, bookId } = parsed.data;
+  const { message, bookId, contextText } = parsed.data;
   let { conversationId } = parsed.data;
 
   const now = new Date().toISOString();
@@ -62,6 +65,9 @@ export async function POST(req: NextRequest) {
     extra = libraryContext(
       books.map((b) => ({ title: b.title, authors: b.authors.join(", "), status: b.status, themes: b.aiThemes }))
     );
+  }
+  if (contextText) {
+    extra += `\n\nThe user is currently reading this passage. You may quote it verbatim; treat it as the only text you have direct access to:\n"""\n${contextText}\n"""`;
   }
   const system = companionSystemPrompt(profile, extra);
 

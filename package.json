@@ -17,10 +17,14 @@
     "@libsql/client": "^0.17.4",
     "@tanstack/react-query": "^5.101.2",
     "drizzle-orm": "^0.45.2",
+    "epubjs": "^0.3.93",
     "motion": "^12.42.2",
     "next": "15.5.20",
+    "pdfjs-dist": "^6.1.200",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "react-pdf": "^10.4.1",
+    "react-reader": "^2.0.15",
     "zod": "^4.4.3"
   },
   "devDependencies": {

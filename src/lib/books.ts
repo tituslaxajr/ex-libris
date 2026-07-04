@@ -56,6 +56,10 @@ export async function getBookWithMeta(id: number): Promise<BookWithMeta | null> 
   return all.find((b) => b.id === id) ?? null;
 }
 
+export async function getBookFiles(bookId: number) {
+  return db.select().from(tables.bookFiles).where(eq(tables.bookFiles.bookId, bookId));
+}
+
 export async function getLibraryProfile(): Promise<LibraryProfile | undefined> {
   const rows = await db.select().from(tables.libraryProfile).where(eq(tables.libraryProfile.id, 1));
   return rows[0];

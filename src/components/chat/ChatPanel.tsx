@@ -11,9 +11,11 @@ interface Message {
 export default function ChatPanel({
   bookId,
   placeholder = "Ask about your library…",
+  contextText,
 }: {
   bookId?: number;
   placeholder?: string;
+  contextText?: string;
 }) {
   const [aiStatus, setAiStatus] = useState<{ enabled: boolean } | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -58,7 +60,7 @@ export default function ChatPanel({
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, conversationId, bookId }),
+        body: JSON.stringify({ message: text, conversationId, bookId, contextText }),
       });
       if (!res.ok || !res.body) throw new Error("Chat request failed");
 
