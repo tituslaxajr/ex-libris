@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./globals.css";
 import { getLibraryProfile } from "@/lib/books";
 import RegisterSW from "@/components/pwa/RegisterSW";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,8 +24,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#d97757",
+  themeColor: "#7c1f1c",
 };
+
+// Runs before paint: if the reader last chose lamplight, force the dark theme
+// so there's no flash of the daytime palette.
+const NO_FLASH = `try{if(localStorage.getItem('exlibris-mode')==='night'){document.documentElement.setAttribute('data-theme','observatory')}}catch(e){}`;
 
 export const dynamic = "force-dynamic";
 
@@ -38,8 +43,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html lang="en" data-theme={themeKey} className={`${inter.variable} ${sourceSerif.variable}`}>
+    <html
+      lang="en"
+      data-theme={themeKey}
+      data-theme-base={themeKey}
+      className={`${inter.variable} ${sourceSerif.variable}`}
+    >
       <body>
+        <script dangerouslySetInnerHTML={{ __html: NO_FLASH }} />
         <header
           className="sticky top-0 z-40 border-b backdrop-blur"
           style={{
@@ -55,12 +66,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             >
               Ex Libris
             </Link>
-            <div className="flex gap-4 text-sm" style={{ color: "var(--ink-soft)" }}>
-              <Link href="/" className="hover:underline">
+            <div
+              className="flex flex-1 items-center gap-4 text-[0.7rem] uppercase tracking-[0.14em]"
+              style={{ color: "var(--ink-soft)" }}
+            >
+              <Link href="/" className="hover:underline" style={{ color: "var(--accent)" }}>
                 Shelves
               </Link>
               <Link href="/books/new" className="hover:underline">
-                Add a book
+                Add
               </Link>
               <Link href="/companion" className="hover:underline">
                 Companion
@@ -77,6 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               <Link href="/settings" className="hover:underline">
                 Settings
               </Link>
+              <ThemeToggle />
             </div>
           </nav>
         </header>

@@ -23,9 +23,10 @@ export default function Bookshelf({ groups }: { groups: ShelfGroup[] }) {
     <div className="space-y-10">
       {groups.map((group) => (
         <section key={group.label}>
-          <h2 className="mb-2 text-lg font-semibold italic" style={{ color: "var(--ink-soft)" }}>
+          <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold italic" style={{ color: "var(--ink-soft)" }}>
             {group.label}
-            <span className="ml-2 text-xs not-italic opacity-70">{group.books.length}</span>
+            <span className="text-xs not-italic opacity-70">{group.books.length}</span>
+            <span className="fleuron ml-1 text-sm not-italic" aria-hidden="true" />
           </h2>
           <div
             className="rounded-lg px-4 pt-6"

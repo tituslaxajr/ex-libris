@@ -1,88 +1,97 @@
 /*
- * Visual themes, selected by the AI library classifier via
- * library_profile.themeKey → <html data-theme="...">.
- *
- * All themes share a Claude-inspired identity: the warm coral accent and the
- * Inter/Source-Serif pairing are constant; only the background/ink mood shifts
- * between them (with one warm-dark variant). Nothing genre-specific is
- * hardcoded in components — only these variables.
+ * "Vellum & Candlelight" — one identity, two moods.
+ * Light themes are a fine theological press (ink on parchment, oxblood accent);
+ * the dark theme (observatory) is a rare-books room by lamplight (gilt on
+ * near-black). Selected via library_profile.themeKey → <html data-theme="...">,
+ * or the header day/night toggle. Nothing genre-specific is hardcoded in
+ * components — only these variables.
  */
 
 :root {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif: var(--font-source-serif), Georgia, "Times New Roman", serif;
-  /* back-compat alias (older code referenced --font-display) */
-  --font-display: var(--font-serif);
+  --font-serif: var(--font-source-serif), "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-display: var(--font-serif); /* back-compat alias */
 }
 
+/* ---------- Light "Vellum" family ---------- */
 :root,
 [data-theme="hearth"] {
-  --bg: #faf9f5;
-  --bg-deep: #f0eee6;
-  --surface: #ffffff;
-  --ink: #141413;
-  --ink-soft: #73716a;
-  --accent: #d97757;
-  --accent-hover: #c4633f;
-  --accent-soft: #f0d6c8;
-  --shelf-wood: #c9a88f;
-  --shelf-wood-dark: #b0906f;
-  --shelf-back: #8a6f57;
+  --bg: #ece5d4;
+  --bg-deep: #e2d9c2;
+  --surface: #f5efe0;
+  --ink: #211c15;
+  --ink-soft: #6d6350;
+  --accent: #7c1f1c;
+  --accent-hover: #611715;
+  --accent-soft: #e7d3c3;
+  --accent-2: #1f3a5f; /* Geneva blue — secondary marker */
+  --gilt: #9a7b3f;
+  --shelf-wood: #b79b74;
+  --shelf-wood-dark: #9c7f57;
+  --shelf-back: #6f5940;
 }
 
 [data-theme="study"] {
-  --bg: #f6f3ea;
-  --bg-deep: #efe7d9;
-  --surface: #fffdf8;
-  --ink: #191712;
-  --ink-soft: #6e6555;
-  --accent: #d97757;
-  --accent-hover: #c4633f;
-  --accent-soft: #f0d6c8;
-  --shelf-wood: #c4a382;
-  --shelf-wood-dark: #a98862;
-  --shelf-back: #7e654b;
+  --bg: #eee4cd;
+  --bg-deep: #e4d7b9;
+  --surface: #f7f1e1;
+  --ink: #201a12;
+  --ink-soft: #6b6046;
+  --accent: #7c1f1c;
+  --accent-hover: #611715;
+  --accent-soft: #e8d2bf;
+  --accent-2: #1f3a5f;
+  --gilt: #9a7b3f;
+  --shelf-wood: #b89a6d;
+  --shelf-wood-dark: #9b7d51;
+  --shelf-back: #6c543a;
 }
 
 [data-theme="gallery"] {
-  --bg: #faf9f7;
-  --bg-deep: #efeeea;
-  --surface: #ffffff;
-  --ink: #1a1a18;
-  --ink-soft: #6f6d67;
-  --accent: #d97757;
-  --accent-hover: #c4633f;
-  --accent-soft: #f0d6c8;
-  --shelf-wood: #b8b2a6;
-  --shelf-wood-dark: #9d968a;
-  --shelf-back: #746e64;
-}
-
-[data-theme="observatory"] {
-  /* the one warm-dark variant — Claude dark mode */
-  --bg: #262624;
-  --bg-deep: #1f1e1d;
-  --surface: #30302e;
-  --ink: #f5f4ee;
-  --ink-soft: #a6a39a;
-  --accent: #e08a6b;
-  --accent-hover: #eb9d80;
-  --accent-soft: #4a3a30;
-  --shelf-wood: #4a3f34;
-  --shelf-wood-dark: #362e26;
-  --shelf-back: #241e18;
+  --bg: #eae7dd;
+  --bg-deep: #ddd9cc;
+  --surface: #f6f4ec;
+  --ink: #1e1c17;
+  --ink-soft: #67635a;
+  --accent: #7c1f1c;
+  --accent-hover: #611715;
+  --accent-soft: #e5d6cd;
+  --accent-2: #1f3a5f;
+  --gilt: #8f7a4a;
+  --shelf-wood: #ada693;
+  --shelf-wood-dark: #928b78;
+  --shelf-back: #625d50;
 }
 
 [data-theme="conservatory"] {
-  --bg: #f7f6ef;
-  --bg-deep: #ecebe0;
-  --surface: #fffef9;
-  --ink: #191a15;
-  --ink-soft: #6c6d5f;
-  --accent: #d97757;
-  --accent-hover: #c4633f;
-  --accent-soft: #f0d6c8;
-  --shelf-wood: #c2ab86;
-  --shelf-wood-dark: #a68f68;
-  --shelf-back: #7c6a4d;
+  --bg: #e9e7d3;
+  --bg-deep: #dcdabf;
+  --surface: #f4f2e0;
+  --ink: #1d1f15;
+  --ink-soft: #64654f;
+  --accent: #7c1f1c;
+  --accent-hover: #611715;
+  --accent-soft: #e6d5c4;
+  --accent-2: #33513a; /* here the secondary leans forest */
+  --gilt: #927d47;
+  --shelf-wood: #b3a271;
+  --shelf-wood-dark: #978656;
+  --shelf-back: #67583b;
+}
+
+/* ---------- Dark "Candlelight" variant ---------- */
+[data-theme="observatory"] {
+  --bg: #14140d;
+  --bg-deep: #1b1a12;
+  --surface: #201e15;
+  --ink: #ece3ce;
+  --ink-soft: #a1957a;
+  --accent: #d0a24a;
+  --accent-hover: #e0b45f;
+  --accent-soft: #3a2f1c;
+  --accent-2: #b98a3e;
+  --gilt: #e5c877;
+  --shelf-wood: #4a3d28;
+  --shelf-wood-dark: #362c1c;
+  --shelf-back: #221b11;
 }

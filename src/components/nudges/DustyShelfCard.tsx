@@ -48,11 +48,12 @@ export default function DustyShelfCard() {
         >
           ×
         </button>
-        <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--accent)" }}>
+        <p className="label-caps flex items-center gap-2">
+          <span className="fleuron not-italic" aria-hidden="true" />
           From the dusty shelf
           {data.daysOnShelf ? ` · ${data.daysOnShelf} days waiting` : ""}
         </p>
-        <p className="mt-2 leading-relaxed">{data.nudge.message}</p>
+        <p className="dropcap mt-2 leading-relaxed">{data.nudge.message}</p>
         {data.book && (
           <Link
             href={`/books/${data.book.id}`}
