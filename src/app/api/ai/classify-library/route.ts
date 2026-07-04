@@ -4,6 +4,7 @@ import { eq, and } from "drizzle-orm";
 import { aiEnabled, getProvider } from "@/lib/ai";
 import { CLASSIFY_SCHEMA, classifyPrompt } from "@/lib/ai/prompts";
 import { getBooksWithMeta } from "@/lib/books";
+import { recordUsage } from "@/lib/ai/usage";
 import type { LibraryTaxonomyEntry } from "@/db/schema";
 
 interface Classification {
@@ -38,6 +39,7 @@ export async function POST() {
     maxTokens: 4096,
     tier: "task",
   });
+  await recordUsage({ feature: "classify", tier: "task", tokensIn: result.tokensIn, tokensOut: result.tokensOut });
 
   let classification: Classification;
   try {

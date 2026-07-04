@@ -4,6 +4,7 @@ import { eq, desc } from "drizzle-orm";
 import { aiEnabled, getProvider } from "@/lib/ai";
 import { companionSystemPrompt, QUIZ_SCHEMA, quizPrompt } from "@/lib/ai/prompts";
 import { getBookWithMeta, getLibraryProfile } from "@/lib/books";
+import { recordUsage } from "@/lib/ai/usage";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ bookId: string }> }) {
   if (!aiEnabled()) {
@@ -28,6 +29,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ bo
     maxTokens: 1024,
     tier: "task",
   });
+  await recordUsage({ feature: "quiz", tier: "task", tokensIn: result.tokensIn, tokensOut: result.tokensOut });
 
   try {
     const quiz = JSON.parse(result.text);

@@ -30,7 +30,13 @@ The app **adapts to your collection**: an AI classifier reads your catalogue and
 **Motivation**
 - **The dusty shelf** — the app surfaces the book that has waited longest and writes a personal encouragement that remembers *why you bought it*
 
-Everything except the AI features works with **no API key at all** — cataloguing, shelves, the reader, progress tracking, streaks, reading plans, search, and template-based nudges are fully functional offline.
+**Yours, and portable**
+- **Data export** — one click downloads your whole library (catalogue, reading history, highlights, notes, plans) as portable JSON
+- **AI-cost display** — every AI call's token usage is recorded and Settings shows a running spend estimate, broken down by feature
+- **Optional passcode** — set an `APP_PASSCODE` and the app locks behind an unlock screen; leave it unset and it stays fully open
+- **Installable (PWA)** — add Ex Libris to your phone or desktop home screen and it opens like a native app
+
+Everything except the AI features works with **no API key at all** — cataloguing, shelves, the reader, progress tracking, streaks, reading plans, search, export, and template-based nudges are fully functional offline.
 
 ## Getting started
 
@@ -98,8 +104,8 @@ The app runs anywhere Next.js runs. The simplest free path:
 - **Phase 1 — Catalogue & companion** ✅ shipped
 - **Phase 2 — Read & track** ✅ shipped (EPUB + PDF reader, progress sync, highlights, sessions, streaks, stats, chapter-grounded chat)
 - **Phase 3 — Learn & plan** ✅ shipped (reading plans with checkpoints + pace nudges, recall quizzes, cross-library FTS5 search, milestone celebrations)
-- **Phase 3 remainder — public-domain imports:** pull free full texts of the classics (Calvin, Bunyan, the Puritans) from Project Gutenberg/CCEL straight into the reader (deferred — needs outbound network access to those hosts)
-- **Phase 4 — Polish:** optional passcode, data export, cumulative AI-cost display, PWA install
+- **Phase 4 — Polish & guard** ✅ shipped (data export, AI-cost display, optional passcode lock, PWA install)
+- **Remaining — public-domain imports:** pull free full texts of the classics (Calvin, Bunyan, the Puritans) from Project Gutenberg/CCEL straight into the reader (deferred — needs outbound network access to those hosts)
 
 > **Deploying the reader:** uploads are stored on local disk by default (`data/uploads/`). On a serverless host like Vercel, the ~4.5 MB request-body limit means large EPUB/PDF uploads should go through a blob store (e.g. Vercel Blob) — the storage layer in `src/lib/storage/` is the single seam to swap for that.
 

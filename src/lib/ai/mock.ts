@@ -82,5 +82,6 @@ export const mockProvider: AIProvider = {
       yield word + " ";
       await new Promise((r) => setTimeout(r, 15));
     }
+    opts.onUsage?.({ tokensIn: 0, tokensOut: 0 });
   },
 };

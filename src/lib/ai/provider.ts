@@ -11,6 +11,8 @@ export interface CompletionOptions {
   jsonSchema?: Record<string, unknown>;
   /** "chat" uses the high-quality conversation model; "task" uses the cheap background model. */
   tier?: "chat" | "task";
+  /** Called once when a stream finishes, with the final token usage. */
+  onUsage?: (usage: { tokensIn: number; tokensOut: number }) => void;
 }
 
 export interface CompletionResult {

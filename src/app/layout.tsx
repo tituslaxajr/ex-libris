@@ -1,11 +1,17 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import "./globals.css";
 import { getLibraryProfile } from "@/lib/books";
+import RegisterSW from "@/components/pwa/RegisterSW";
 
 export const metadata: Metadata = {
   title: "Ex Libris",
   description: "Your personal library, alive.",
+  appleWebApp: { capable: true, title: "Ex Libris" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#a05c2c",
 };
 
 export const dynamic = "force-dynamic";
@@ -59,6 +65,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </nav>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+        <RegisterSW />
       </body>
     </html>
   );

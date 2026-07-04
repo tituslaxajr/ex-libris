@@ -169,8 +169,21 @@ export const nudges = sqliteTable("nudges", {
   dismissedAt: text("dismissed_at"),
 });
 
+export const aiUsage = sqliteTable("ai_usage", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  feature: text("feature", {
+    enum: ["chat", "enrich", "classify", "nudge", "quiz", "congrats", "plan_nudge"],
+  }).notNull(),
+  model: text("model").notNull(),
+  tier: text("tier", { enum: ["chat", "task"] }).notNull(),
+  tokensIn: integer("tokens_in").notNull().default(0),
+  tokensOut: integer("tokens_out").notNull().default(0),
+  createdAt: text("created_at").notNull(),
+});
+
 export type Book = typeof books.$inferSelect;
 export type NewBook = typeof books.$inferInsert;
+export type AiUsage = typeof aiUsage.$inferSelect;
 export type Author = typeof authors.$inferSelect;
 export type Tag = typeof tags.$inferSelect;
 export type LibraryProfile = typeof libraryProfile.$inferSelect;

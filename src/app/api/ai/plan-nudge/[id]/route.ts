@@ -5,6 +5,7 @@ import { aiEnabled, getProvider } from "@/lib/ai";
 import { companionSystemPrompt, planNudgePrompt } from "@/lib/ai/prompts";
 import { getBookWithMeta, getLibraryProfile } from "@/lib/books";
 import { planStatus } from "@/lib/plans";
+import { recordUsage } from "@/lib/ai/usage";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -42,6 +43,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
       maxTokens: 400,
       tier: "task",
     });
+    await recordUsage({ feature: "plan_nudge", tier: "task", tokensIn: result.tokensIn, tokensOut: result.tokensOut });
     return NextResponse.json({ message: result.text.trim() || template });
   } catch {
     return NextResponse.json({ message: template });

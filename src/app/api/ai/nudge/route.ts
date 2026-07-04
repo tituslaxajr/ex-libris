@@ -5,6 +5,7 @@ import { aiEnabled, getProvider } from "@/lib/ai";
 import { companionSystemPrompt, nudgePrompt } from "@/lib/ai/prompts";
 import { getBooksWithMeta, getLibraryProfile } from "@/lib/books";
 import { rankDustyBooks, templateNudge } from "@/lib/dusty";
+import { recordUsage } from "@/lib/ai/usage";
 
 // Returns (creating if needed) the current dusty-shelf nudge.
 export async function GET() {
@@ -40,6 +41,7 @@ export async function GET() {
         maxTokens: 512,
         tier: "task",
       });
+      await recordUsage({ feature: "nudge", tier: "task", tokensIn: result.tokensIn, tokensOut: result.tokensOut });
       message = result.text.trim();
     } catch {
       message = templateNudge(top);

@@ -4,6 +4,7 @@ import { db, tables } from "@/db";
 import { eq, asc } from "drizzle-orm";
 import { aiEnabled, getProvider } from "@/lib/ai";
 import { companionSystemPrompt, bookContext, libraryContext } from "@/lib/ai/prompts";
+import { recordUsage } from "@/lib/ai/usage";
 import { getBooksWithMeta, getLibraryProfile } from "@/lib/books";
 
 const chatSchema = z.object({
@@ -79,6 +80,7 @@ export async function POST(req: NextRequest) {
   const provider = getProvider();
   const encoder = new TextEncoder();
   let full = "";
+  let usage = { tokensIn: 0, tokensOut: 0 };
 
   const stream = new ReadableStream({
     async start(controller) {
@@ -86,7 +88,14 @@ export async function POST(req: NextRequest) {
         encoder.encode(`event: meta\ndata: ${JSON.stringify({ conversationId })}\n\n`)
       );
       try {
-        for await (const chunk of provider.stream({ system, messages: chatMessages, maxTokens: 2048 })) {
+        for await (const chunk of provider.stream({
+          system,
+          messages: chatMessages,
+          maxTokens: 2048,
+          onUsage: (u) => {
+            usage = u;
+          },
+        })) {
           full += chunk;
           controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text: chunk })}\n\n`));
         }
@@ -95,7 +104,10 @@ export async function POST(req: NextRequest) {
           role: "assistant",
           content: full,
           createdAt: new Date().toISOString(),
+          tokensIn: usage.tokensIn,
+          tokensOut: usage.tokensOut,
         });
+        await recordUsage({ feature: "chat", tier: "chat", ...usage });
         controller.enqueue(encoder.encode(`event: done\ndata: {}\n\n`));
       } catch (err) {
         const msg = err instanceof Error ? err.message : "AI request failed";

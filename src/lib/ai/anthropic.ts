@@ -65,5 +65,13 @@ export const anthropicProvider: AIProvider = {
         yield event.delta.text;
       }
     }
+    if (opts.onUsage) {
+      try {
+        const final = await stream.finalMessage();
+        opts.onUsage({ tokensIn: final.usage.input_tokens, tokensOut: final.usage.output_tokens });
+      } catch {
+        // usage is best-effort
+      }
+    }
   },
 };

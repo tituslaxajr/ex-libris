@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { aiEnabled, getProvider } from "@/lib/ai";
 import { companionSystemPrompt, ENRICH_SCHEMA, enrichPrompt } from "@/lib/ai/prompts";
 import { getBookWithMeta, getLibraryProfile } from "@/lib/books";
+import { recordUsage } from "@/lib/ai/usage";
 
 export async function POST(_req: NextRequest, { params }: { params: Promise<{ bookId: string }> }) {
   if (!aiEnabled()) {
@@ -21,6 +22,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ bo
     maxTokens: 1024,
     tier: "task",
   });
+  await recordUsage({ feature: "enrich", tier: "task", tokensIn: result.tokensIn, tokensOut: result.tokensOut });
 
   let enrichment: { summary: string; themes: string[]; difficulty: "intro" | "intermediate" | "advanced" };
   try {

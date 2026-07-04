@@ -8,6 +8,13 @@
       "when": 1783122282900,
       "tag": "0000_mighty_shinko_yamashiro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1783131872698,
+      "tag": "0001_optimal_grim_reaper",
+      "breakpoints": true
     }
   ]
 }
