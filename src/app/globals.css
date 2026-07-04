@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "../styles/themes.css";
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-display);
+  min-height: 100vh;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+.surface-card {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: var(--surface);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+.btn-accent:hover {
+  opacity: 0.88;
+}
+.btn-accent:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-quiet {
+  border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+  color: var(--ink);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  transition: background 0.15s ease;
+}
+.btn-quiet:hover {
+  background: var(--bg-deep);
+}
+
+.input-field {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  color: var(--ink);
+  width: 100%;
+}
+.input-field:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
