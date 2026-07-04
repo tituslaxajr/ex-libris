@@ -6,6 +6,7 @@ import { eq, desc } from "drizzle-orm";
 import { aiEnabled } from "@/lib/ai";
 import BookActions from "@/components/books/BookActions";
 import UploadZone from "@/components/books/UploadZone";
+import QuizCard from "@/components/books/QuizCard";
 import ChatPanel from "@/components/chat/ChatPanel";
 
 export const dynamic = "force-dynamic";
@@ -119,6 +120,13 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
                 <Link href={`/books/${book.id}/read`} className="btn-accent inline-block">
                   {book.progressPercent > 0 ? "Continue reading" : "Open the reader"}
                 </Link>
+                <Link
+                  href="/plans"
+                  className="ml-3 text-sm underline"
+                  style={{ color: "var(--accent)" }}
+                >
+                  Start a reading plan →
+                </Link>
               </div>
             ) : (
               <div className="mt-3">
@@ -145,6 +153,12 @@ export default async function BookDetailPage({ params }: { params: Promise<{ id:
               aiEnabled={enabled}
             />
           </div>
+
+          {enabled && (highlights.length > 0 || book.aiSummary) && (
+            <div className="mt-6">
+              <QuizCard bookId={book.id} />
+            </div>
+          )}
 
           {highlights.length > 0 && (
             <div className="surface-card mt-6 p-5">

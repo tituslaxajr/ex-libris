@@ -116,3 +116,46 @@ export function classifyPrompt(books: Array<{ id: number; title: string; authors
 export function nudgePrompt(book: Book, authors: string[], daysUnread: number): string {
   return `Write a short, warm encouragement (2-3 sentences, no headings) nudging the user to finally start a book that has sat unread on their shelf for about ${daysUnread} days. Reference why they bought it if known. Be gentle and motivating, never guilt-tripping.\n\n${bookContext(book, authors)}`;
 }
+
+export function planNudgePrompt(
+  book: Book,
+  authors: string[],
+  behindByDays: number,
+  daysRemaining: number
+): string {
+  return `The user set a reading plan for this book but has fallen about ${behindByDays} days behind pace, with ${daysRemaining} days left to the deadline. Write a short, warm encouragement (2-3 sentences, no headings) to get them back on track. Be practical and kind — suggest a small next step, never guilt. Reference the book by name.\n\n${bookContext(book, authors)}`;
+}
+
+export const QUIZ_SCHEMA = {
+  type: "object",
+  properties: {
+    questions: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          question: { type: "string", description: "A recall or reflection question" },
+          answer: {
+            type: "string",
+            description: "A suggested answer, citing the source highlight or summary it draws on",
+          },
+        },
+        required: ["question", "answer"],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ["questions"],
+  additionalProperties: false,
+} as const;
+
+export function quizPrompt(book: Book, authors: string[], highlights: string[]): string {
+  const hl = highlights.length
+    ? `The user's highlights from this book (draw questions from these, quoting them where relevant):\n${highlights.map((h, i) => `${i + 1}. "${h}"`).join("\n")}`
+    : "The user has no saved highlights for this book yet — base your questions on the summary and general knowledge of the work, and keep them answerable at that level.";
+  return `Write 3-5 short recall and reflection questions to help the user remember and think through this book. For each, give a suggested answer grounded in the supplied material (cite the highlight number or the summary). Do not fabricate quotations beyond the supplied highlights.\n\n${bookContext(book, authors)}\n\n${hl}`;
+}
+
+export function congratsPrompt(book: Book, authors: string[]): string {
+  return `The user just finished reading this book. Write a single warm, specific sentence congratulating them — reference the book by name and, if known, why it mattered to them. No headings, no emoji.\n\n${bookContext(book, authors)}`;
+}

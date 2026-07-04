@@ -21,6 +21,24 @@ function mockJson(opts: CompletionOptions): string {
       themeKey: "study",
     });
   }
+  if (prompt.includes("recall and reflection questions")) {
+    return JSON.stringify({
+      questions: [
+        {
+          question: "What is the book's central claim, in one sentence?",
+          answer: "A mock answer drawn from the summary on file.",
+        },
+        {
+          question: "Which passage did you highlight, and why did it matter to you?",
+          answer: "A mock answer citing your first highlight.",
+        },
+        {
+          question: "How would you explain this book's argument to a friend?",
+          answer: "A mock answer grounded in the supplied material.",
+        },
+      ],
+    });
+  }
   if (prompt.includes("enrich this book")) {
     return JSON.stringify({
       summary:
@@ -36,6 +54,12 @@ function mockText(opts: CompletionOptions): string {
   const prompt = (opts.system + " " + opts.messages.map((m) => m.content).join(" ")).toLowerCase();
   if (prompt.includes("write a short, warm encouragement")) {
     return "That book has been waiting patiently on your shelf. You bought it for a reason — perhaps this week is the time to open it to the first chapter. Even ten pages is a beginning.";
+  }
+  if (prompt.includes("congratulating them")) {
+    return "You finished it — well read. That's a book you'll carry with you.";
+  }
+  if (prompt.includes("get them back on track") || prompt.includes("fallen about")) {
+    return "You've slipped a little behind on this one, but you're not off track — open it to your next checkpoint today and read just a few pages. Steady beats fast.";
   }
   return "This is a mock response from the offline AI provider. Add an Anthropic API key in your environment to enable the real reading companion.";
 }

@@ -20,11 +20,17 @@ The app **adapts to your collection**: an AI classifier reads your catalogue and
 - **Reading companion** — streaming AI chat about a single book or across your whole library ("what do my books say about covenant theology?"), grounded in your catalogue and honest about what it doesn't know
 - **Discuss what you're reading** — open the companion beside the reader and it can quote and discuss the exact chapter on screen
 - **AI enrichment** — one click adds a summary, themes, and difficulty level to any book
+- **Recall quizzes** — generate short recall-and-reflection questions from a book's highlights and themes to help what you read stick
+- **Cross-library search** — full-text search (SQLite FTS5) across titles, authors, AI summaries, themes, and every passage you've highlighted, with matched snippets
+
+**Plan & finish**
+- **Reading plans** — turn a daunting book into a schedule ("the *Institutes* by October"): auto-generated, dated page checkpoints, a live on-pace vs. behind indicator, and a gentle get-back-on-track nudge when you slip
+- **Milestone celebrations** — a confetti moment and a personal congratulation the instant you mark a book finished
 
 **Motivation**
 - **The dusty shelf** — the app surfaces the book that has waited longest and writes a personal encouragement that remembers *why you bought it*
 
-Everything except the AI features works with **no API key at all** — cataloguing, shelves, the reader, progress tracking, streaks, and template-based nudges are fully functional offline.
+Everything except the AI features works with **no API key at all** — cataloguing, shelves, the reader, progress tracking, streaks, reading plans, search, and template-based nudges are fully functional offline.
 
 ## Getting started
 
@@ -91,7 +97,8 @@ The app runs anywhere Next.js runs. The simplest free path:
 
 - **Phase 1 — Catalogue & companion** ✅ shipped
 - **Phase 2 — Read & track** ✅ shipped (EPUB + PDF reader, progress sync, highlights, sessions, streaks, stats, chapter-grounded chat)
-- **Phase 3 — Learn & plan:** reading plans ("the Institutes in 90 days") with checkpoints, recall quizzes from your highlights, cross-library theme search, public-domain imports (Project Gutenberg, CCEL), milestone celebrations
+- **Phase 3 — Learn & plan** ✅ shipped (reading plans with checkpoints + pace nudges, recall quizzes, cross-library FTS5 search, milestone celebrations)
+- **Phase 3 remainder — public-domain imports:** pull free full texts of the classics (Calvin, Bunyan, the Puritans) from Project Gutenberg/CCEL straight into the reader (deferred — needs outbound network access to those hosts)
 - **Phase 4 — Polish:** optional passcode, data export, cumulative AI-cost display, PWA install
 
 > **Deploying the reader:** uploads are stored on local disk by default (`data/uploads/`). On a serverless host like Vercel, the ~4.5 MB request-body limit means large EPUB/PDF uploads should go through a blob store (e.g. Vercel Blob) — the storage layer in `src/lib/storage/` is the single seam to swap for that.

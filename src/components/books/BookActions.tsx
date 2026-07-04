@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Celebration from "@/components/books/Celebration";
 
 interface BookLite {
   id: number;
@@ -28,6 +29,7 @@ export default function BookActions({ book, aiEnabled }: { book: BookLite; aiEna
   const [reason, setReason] = useState(book.acquisitionReason ?? "");
   const [enriching, setEnriching] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [celebration, setCelebration] = useState<string | null>(null);
 
   const patch = async (body: Record<string, unknown>) => {
     setSaving(true);
@@ -41,8 +43,19 @@ export default function BookActions({ book, aiEnabled }: { book: BookLite; aiEna
   };
 
   const changeStatus = async (next: string) => {
+    const wasFinished = status === "finished";
     setStatus(next);
     await patch({ status: next });
+    // Celebrate the moment a book is newly marked finished.
+    if (next === "finished" && !wasFinished) {
+      try {
+        const res = await fetch(`/api/ai/congrats/${book.id}`, { method: "POST" });
+        const data = res.ok ? await res.json() : null;
+        setCelebration(data?.message ?? "You finished it — well read!");
+      } catch {
+        setCelebration("You finished it — well read!");
+      }
+    }
   };
 
   const saveProgress = async () => {
@@ -59,6 +72,7 @@ export default function BookActions({ book, aiEnabled }: { book: BookLite; aiEna
 
   return (
     <div className="space-y-5">
+      <Celebration message={celebration} onClose={() => setCelebration(null)} />
       <div>
         <label className="mb-1 block text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--ink-soft)" }}>
           Status
