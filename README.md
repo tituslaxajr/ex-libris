@@ -92,12 +92,44 @@ The shelves, the colors, and the companion all follow.
 | `npm run seed` | Seed sample books (skips if the DB already has books) |
 | `npm test` | Vitest unit tests (uses the mock AI provider — no key needed) |
 
-## Deploying
+## Launch (self-host)
 
-The app runs anywhere Next.js runs. The simplest free path:
+Ex Libris runs as a single container with **one persistent volume** mounted at `/data` — your SQLite database (`/data/exlibris.db`) and uploaded books (`/data/uploads/`) both live there and survive redeploys. No external database or blob store needed. Migrations run automatically on container start.
 
-1. **Database:** create a free [Turso](https://turso.tech) database and set `DATABASE_URL=libsql://...` and `DATABASE_AUTH_TOKEN` in your deployment environment (locally it's just a SQLite file — your data stays exportable either way).
-2. **Hosting:** push to GitHub and import the repo in [Vercel](https://vercel.com). Add the env vars from your `.env`.
+**Set your secrets first** — copy `.env.example` to `.env` and set at least `ANTHROPIC_API_KEY` (or `AI_PROVIDER=mock` to run without a key), and optionally `APP_PASSCODE` to lock the app.
+
+### Any host, with Docker Compose
+
+```bash
+docker compose up -d --build      # builds the image, creates the volume, starts on :3000
+```
+
+That's the whole deploy for a VPS. Put it behind a reverse proxy (Caddy/nginx) for TLS and a domain.
+
+### Fly.io
+
+```bash
+fly launch --no-deploy            # reuses the included fly.toml (edit `app` to a unique name)
+fly volumes create exlibris_data --size 1   # the /data volume
+fly secrets set ANTHROPIC_API_KEY=sk-ant-...   # and APP_PASSCODE=... if you want the lock
+fly deploy
+```
+
+### Env checklist
+
+| Variable | Needed | Notes |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | for AI features | omit (or `AI_PROVIDER=mock`) to run without AI |
+| `APP_PASSCODE` | optional | set it and the app locks behind an unlock screen |
+| `DATABASE_URL` | preset | `file:/data/exlibris.db` (set by compose/fly) |
+| `UPLOAD_DIR` | preset | `/data/uploads` (set by compose/fly) |
+| `AI_CHAT_MODEL` / `AI_TASK_MODEL` | optional | override the default models |
+
+### Backups — your data is one file
+
+Everything you own is on the volume. To back up, copy `exlibris.db` and the `uploads/` folder off it (e.g. `docker compose cp ex-libris:/data ./backup`, or `fly ssh sftp get`). You can also use **Settings → Export my library** for a portable JSON snapshot of the catalogue, reading history, highlights, and plans.
+
+> Prefer serverless (Vercel)? It's possible but needs two swaps — a hosted DB (e.g. [Turso](https://turso.tech): set `DATABASE_URL=libsql://…` + `DATABASE_AUTH_TOKEN`) and a blob store for uploads (the storage seam is `src/lib/storage/`, since serverless disks are ephemeral and cap request bodies at ~4.5 MB). The container path above avoids both.
 
 ## Roadmap
 
@@ -105,9 +137,8 @@ The app runs anywhere Next.js runs. The simplest free path:
 - **Phase 2 — Read & track** ✅ shipped (EPUB + PDF reader, progress sync, highlights, sessions, streaks, stats, chapter-grounded chat)
 - **Phase 3 — Learn & plan** ✅ shipped (reading plans with checkpoints + pace nudges, recall quizzes, cross-library FTS5 search, milestone celebrations)
 - **Phase 4 — Polish & guard** ✅ shipped (data export, AI-cost display, optional passcode lock, PWA install)
+- **Launch** ✅ shipped (self-hosted container + persistent volume — Docker Compose / Fly.io / any VPS; migrate-on-start)
 - **Remaining — public-domain imports:** pull free full texts of the classics (Calvin, Bunyan, the Puritans) from Project Gutenberg/CCEL straight into the reader (deferred — needs outbound network access to those hosts)
-
-> **Deploying the reader:** uploads are stored on local disk by default (`data/uploads/`). On a serverless host like Vercel, the ~4.5 MB request-body limit means large EPUB/PDF uploads should go through a blob store (e.g. Vercel Blob) — the storage layer in `src/lib/storage/` is the single seam to swap for that.
 
 ## Tech
 
